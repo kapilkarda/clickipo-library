@@ -1,3 +1,4 @@
+import 'package:counter_flutter/pages/PlaceOrder.dart';
 import 'package:flutter/material.dart';
 
 import 'all_offering.dart';
@@ -13,7 +14,9 @@ class _OfferingDetailsState extends State<OfferingDetails> {
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.pop(context);
+          },
           child: Icon(
             Icons.arrow_back_ios,
             color: Color(0xFF649f49),
@@ -96,8 +99,8 @@ class _OfferingDetailsState extends State<OfferingDetails> {
             ),
             GestureDetector(
               onTap: () {
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => AllOfferingS()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PlaceOrderScreen()));
               },
               child: Container(
                 width: double.infinity,
@@ -116,7 +119,7 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  "Not available at this time",
+                  "Place order",
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),

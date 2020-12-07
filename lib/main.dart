@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
+import 'package:counter_flutter/pages/LoginScreen.dart';
 import 'package:counter_flutter/pages/all_offering.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +38,7 @@ class _MyFlutterActivityState extends State<MyFlutterActivity> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
      // home: OrderDetails(),
-      home: MyHomePage(),
+      home: LoginScreen(),
     );
   }
 }
@@ -61,10 +62,6 @@ class _MyHomePageState extends State<MyHomePage>
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        leading: Icon(
-          Icons.menu,
-          color: Color(0xFF8bc53f),
-        ),
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Image.asset("assets/images/1app-02.png",

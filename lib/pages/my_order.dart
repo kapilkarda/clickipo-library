@@ -1,3 +1,4 @@
+import 'package:counter_flutter/pages/ConfirmCancel.dart';
 import 'package:flutter/material.dart';
 
 import '../order_details.dart';
@@ -16,19 +17,21 @@ class _MyOrderState extends State<MyOrder> {
     return Scaffold(
       body: Column(
         children: [
-          Container(
-            width: double.infinity,
-            color: Colors.grey.shade300,
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.info, color: Color(0xFF00ccff)),
-                Text(
-                  "Swipe right to see order history.",
-                  style: TextStyle(fontSize: 17, color: Color(0xFF00ccff)),
-                ),
-              ],
+          GestureDetector(
+            child: Container(
+              width: double.infinity,
+              color: Colors.grey.shade300,
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.info, color: Color(0xFF00ccff)),
+                  Text(
+                    "Swipe right to see order history.",
+                    style: TextStyle(fontSize: 17, color: Color(0xFF00ccff)),
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(
@@ -143,19 +146,24 @@ class _MyOrderState extends State<MyOrder> {
                               left: 14, right: 14, top: 10, bottom: 10),
                           child: Row(
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.orange,
-                                    borderRadius:
-                                    BorderRadius.circular(5)),
-                                width: (29 / 100) *
-                                    MediaQuery.of(context).size.width,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Cancel Order",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500),
+                              InkWell(
+                                onTap: (){
+                                  Navigator.push(context,MaterialPageRoute(builder: (context)=> ConfirmCancel()));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.orange,
+                                      borderRadius:
+                                      BorderRadius.circular(5)),
+                                  width: (29 / 100) *
+                                      MediaQuery.of(context).size.width,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Cancel Order",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500),
+                                  ),
                                 ),
                               ),
                               InkWell(

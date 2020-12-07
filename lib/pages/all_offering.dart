@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../order_details.dart';
 import 'offering_details.dart';
 
 class AllOffering extends StatefulWidget {

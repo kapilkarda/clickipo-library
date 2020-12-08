@@ -67,18 +67,18 @@ class _MyHomePageState extends State<MyHomePage>
         title: Image.asset("assets/images/1app-02.png",
         height: 70,
         width: 120,),
-        actions: <Widget>[
-          Icon(
-            Icons.search,
-            color: Color(0xFF8bc53f),
-          ),
-          Image.asset(
-            "assets/images/3dot-removebg-preview.png",
-            height: 20,
-            width: 25,
-            color: Color(0xFF8bc53f),
-          )
-        ],
+        // actions: <Widget>[
+        //   Icon(
+        //     Icons.search,
+        //     color: Color(0xFF8bc53f),
+        //   ),
+        //   Image.asset(
+        //     "assets/images/3dot-removebg-preview.png",
+        //     height: 20,
+        //     width: 25,
+        //     color: Color(0xFF8bc53f),
+        //   )
+        // ],
       ),
       body: new Column(
         children: <Widget>[

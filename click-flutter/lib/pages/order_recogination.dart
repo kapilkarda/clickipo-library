@@ -110,7 +110,7 @@ class _OrderRecoginationState extends State<OrderRecogination> {
                       fontWeight: FontWeight.w500)),
               TextSpan(
                   text:
-                      "your order below. You may keep the same amount,modify,or cancel your order. ",
+                  "your order below. You may keep the same amount,modify,or cancel your order. ",
                   style: TextStyle(fontSize: 16, color: Colors.grey.shade600)),
             ]),
           ),
@@ -188,9 +188,9 @@ class _OrderRecoginationState extends State<OrderRecogination> {
           ),
           Text(
             "There is no assurance that your conditional offer to buy will receive the full "
-            "requested allocation or any allocation at all. Your order is conditional on the final "
-            "share price being no greater than 20% higher or lower than the anticipated price range. "
-            "Your order will be for the dollar amount calculated ragardless of the final share price.",
+                "requested allocation or any allocation at all. Your order is conditional on the final "
+                "share price being no greater than 20% higher or lower than the anticipated price range. "
+                "Your order will be for the dollar amount calculated ragardless of the final share price.",
             style: TextStyle(
                 color: Colors.grey.shade700,
                 fontWeight: FontWeight.w600,

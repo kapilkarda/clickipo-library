@@ -1,0 +1,11 @@
+include ':app'
+rootProject.name = "CourtCounter"
+
+setBinding(new Binding([gradle: this]))                                 // new
+evaluate(new File(                                                      // new
+        settingsDir.parentFile,                                               // new
+        'click-flutter/.android/include_flutter.groovy'                          // new
+))
+
+include ':click-flutter'
+project(':click-flutter').projectDir = new File('../click-flutter')

@@ -1,0 +1,4 @@
+#Tue Dec 08 09:44:26 IST 2020
+base.0=C\:\\Users\\Ankita\\Desktop\\Digi - Copy\\clickipo-library\\build\\host\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

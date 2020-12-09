@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'pages/order_recogination.dart';
-
 class OrderDetails extends StatefulWidget {
   @override
   _OrderDetailsState createState() => _OrderDetailsState();
@@ -14,8 +12,8 @@ class _OrderDetailsState extends State<OrderDetails> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => OrderRecogination()));
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => OrderRecogination()));
           },
           child: Icon(
             Icons.arrow_back_ios,

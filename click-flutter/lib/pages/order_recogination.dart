@@ -1,16 +1,39 @@
+import 'dart:convert';
+
+import 'package:counter_flutter/repository/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'offering_details.dart';
+import 'LoginScreen.dart';
 
 class OrderRecogination extends StatefulWidget {
+  final viewData;
+  OrderRecogination(this.viewData);
   @override
   _OrderRecoginationState createState() => _OrderRecoginationState();
 }
 
 class _OrderRecoginationState extends State<OrderRecogination> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  getOrderReconfirm(ordRedata) async {
+    var orderrecType = await Providers().getorderReco(ordRedata);
+    if (orderrecType.error == 0) {
+      setState(() {
+        //orderdata = orderrecType.data;
+      });
+    } else if (orderrecType.error == 3001) {
+      _scaffoldKey.currentState.showSnackBar(
+          new SnackBar(content: new Text(orderrecType.errorConfig)));
+    } else if (orderrecType.error == 401) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
@@ -42,9 +65,10 @@ class _OrderRecoginationState extends State<OrderRecogination> {
               ),
               Text(
                   new String.fromCharCodes(new Runes('\u0024')) +
-                      "10.00 - " +
+                      widget.viewData['mintickersize'].toString() +
+                      '-' +
                       new String.fromCharCodes(new Runes('\u0024')) +
-                      '10,000.00',
+                      widget.viewData['maxtickersize'].toString(),
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
             ],
           ),
@@ -76,10 +100,10 @@ class _OrderRecoginationState extends State<OrderRecogination> {
             children: <Widget>[
               Text(
                   new String.fromCharCodes(new Runes('\u0024')) +
-                      '8.00' +
+                      widget.viewData['minprice'].toString() +
                       '-' +
                       new String.fromCharCodes(new Runes('\u0024')) +
-                      '10.00',
+                      widget.viewData['maxprice'].toString(),
                   style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey.shade600,
@@ -110,7 +134,7 @@ class _OrderRecoginationState extends State<OrderRecogination> {
                       fontWeight: FontWeight.w500)),
               TextSpan(
                   text:
-                  "your order below. You may keep the same amount,modify,or cancel your order. ",
+                      "your order below. You may keep the same amount,modify,or cancel your order. ",
                   style: TextStyle(fontSize: 16, color: Colors.grey.shade600)),
             ]),
           ),
@@ -188,9 +212,9 @@ class _OrderRecoginationState extends State<OrderRecogination> {
           ),
           Text(
             "There is no assurance that your conditional offer to buy will receive the full "
-                "requested allocation or any allocation at all. Your order is conditional on the final "
-                "share price being no greater than 20% higher or lower than the anticipated price range. "
-                "Your order will be for the dollar amount calculated ragardless of the final share price.",
+            "requested allocation or any allocation at all. Your order is conditional on the final "
+            "share price being no greater than 20% higher or lower than the anticipated price range. "
+            "Your order will be for the dollar amount calculated ragardless of the final share price.",
             style: TextStyle(
                 color: Colors.grey.shade700,
                 fontWeight: FontWeight.w600,
@@ -224,15 +248,30 @@ class _OrderRecoginationState extends State<OrderRecogination> {
               SizedBox(
                 width: 10,
               ),
-              Container(
-                height: 45,
-                width: (43 / 100) * MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.green.shade300),
-                alignment: Alignment.center,
-                child: Text("Reconfirm",
-                    style: TextStyle(fontSize: 20, color: Colors.white)),
+              InkWell(
+                onTap: () {
+                  var ordRedata = {
+                    "ioi_reconfirm": widget.viewData['ioicutoff'] == null
+                        ? 'reconfirm'
+                        : 'ioi',
+                    "mpid": "MPID",
+                    "buying_power": 121212,
+                    "account_id": "varun2020",
+                    "ext_id": widget.viewData['exid']
+                  };
+                  print("jdhjh $ordRedata");
+                  getOrderReconfirm(ordRedata);
+                },
+                child: Container(
+                  height: 45,
+                  width: (43 / 100) * MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.green.shade300),
+                  alignment: Alignment.center,
+                  child: Text("Reconfirm",
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                ),
               )
             ],
           )

@@ -1,14 +1,43 @@
+import 'dart:convert';
+
+import 'package:counter_flutter/element/circluarloader_widget.dart';
+import 'package:counter_flutter/model/offeringDetails_model.dart';
 import 'package:counter_flutter/pages/PlaceOrder.dart';
+import 'package:counter_flutter/repository/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'all_offering.dart';
+import 'LoginScreen.dart';
 
 class OfferingDetails extends StatefulWidget {
+  final offid;
+  OfferingDetails(this.offid);
   @override
   _OfferingDetailsState createState() => _OfferingDetailsState();
 }
 
 class _OfferingDetailsState extends State<OfferingDetails> {
+  OffDetailsData offdetailsdata;
+
+  getOfferingDetailsLi() async {
+    var offeid = widget.offid;
+    var offeringDType = await Providers().getOfferingDetails(offeid);
+    print("hghg ${json.encode(offeringDType)}");
+    if (offeringDType.error == 0) {
+      setState(() {
+        offdetailsdata = offeringDType.data;
+      });
+    } else if (offeringDType.error == 401) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } else {}
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getOfferingDetailsLi();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,210 +52,236 @@ class _OfferingDetailsState extends State<OfferingDetails> {
           ),
         ),
         backgroundColor: Colors.white,
-        title: Text(
-          "Engineer Master Solution Pvt Ltd \nMSFT",
-          style: TextStyle(color: Color(0xFF002b47), fontSize: 18),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            (offdetailsdata != null)
+                ? Text(
+                    offdetailsdata.name,
+                    style: TextStyle(color: Color(0xFF002b47), fontSize: 18),
+                  )
+                : Text("N/a"),
+            (offdetailsdata != null)
+                ? Text(offdetailsdata.tickerSymbol,
+                    style: TextStyle(color: Color(0xFF002b47), fontSize: 18))
+                : Text("N/a")
+          ],
         ),
         centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
-        child: ListView(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "IPO",
-                  style: TextStyle(color: Color(0xFF8bc53f), fontSize: 19),
-                ),
-                Text(
-                  "Financial",
-                  style: TextStyle(color: Color(0xFF8bc53f), fontSize: 19),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Date:",
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 19),
-                ),
-                Text(
-                  "TBD",
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 19),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Price range:",
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 19),
-                ),
-                Text(
-                  "TBD",
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 19),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Approx shares:",
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 19),
-                ),
-                Text(
-                  "TBD",
-                  style: TextStyle(color: Colors.grey.shade500, fontSize: 19),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PlaceOrderScreen()));
-              },
-              child: Container(
-                width: double.infinity,
-                height: 45,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      colors: [
-                        //Color(0xFF8bc53f),
-                        Color(0xFF98cd4a),
-                        Color(0xFF649f49)
-                      ]),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  "Place order",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
+        child: (offdetailsdata == null)
+            ? CircularLoadingWidget(
+                height: 200,
+              )
+            : ListView(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        offdetailsdata.offeringTypeName,
+                        style:
+                            TextStyle(color: Color(0xFF8bc53f), fontSize: 19),
+                      ),
+                      Text(
+                        offdetailsdata.industry,
+                        style:
+                            TextStyle(color: Color(0xFF8bc53f), fontSize: 19),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Date:",
+                        style: TextStyle(
+                            color: Colors.grey.shade500, fontSize: 19),
+                      ),
+                      Text(
+                        "TBD",
+                        style: TextStyle(
+                            color: Colors.grey.shade500, fontSize: 19),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Price range:",
+                        style: TextStyle(
+                            color: Colors.grey.shade500, fontSize: 19),
+                      ),
+                      Text(
+                        "TBD",
+                        style: TextStyle(
+                            color: Colors.grey.shade500, fontSize: 19),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Approx shares:",
+                        style: TextStyle(
+                            color: Colors.grey.shade500, fontSize: 19),
+                      ),
+                      Text(
+                        "TBD",
+                        style: TextStyle(
+                            color: Colors.grey.shade500, fontSize: 19),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PlaceOrderScreen()));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            colors: [
+                              //Color(0xFF8bc53f),
+                              Color(0xFF98cd4a),
+                              Color(0xFF649f49)
+                            ]),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Place order",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: (42 / 100) * MediaQuery.of(context).size.width,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                                color: Color(0xFF649f49), width: 1.5)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Share",
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF8bc53f)),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 15),
+                        width: (42 / 100) * MediaQuery.of(context).size.width,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                                color: Color(0xFF649f49), width: 1.5)),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Interested?",
+                          style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF8bc53f)),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "DESCRIPTION",
+                        style: TextStyle(
+                            color: Color(0xFF002b47),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 7),
+                        child: Text(offdetailsdata.description,
+                            style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400)),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.edit,
+                        size: 15,
+                      ),
+                      Text("Prospectus",
+                          style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "UNDERWRITER(S)",
+                        style: TextStyle(
+                            color: Color(0xFF002b47),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 7),
+                        child: Text(
+                            "ABEL/NOSER CORP.-ABN AMRO SECURITIES \n(USA)LLC",
+                            style: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400)),
+                      )
+                    ],
+                  ),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              children: <Widget>[
-                Container(
-                  width: (42 / 100) * MediaQuery.of(context).size.width,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Color(0xFF649f49), width: 1.5)),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Share",
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF8bc53f)),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 15),
-                  width: (42 / 100) * MediaQuery.of(context).size.width,
-                  height: 40,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Color(0xFF649f49), width: 1.5)),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Interested?",
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFF8bc53f)),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "DESCRIPTION",
-                  style: TextStyle(
-                      color: Color(0xFF002b47),
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 7),
-                  child: Text("adfasd saf asf",
-                      style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400)),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              children: <Widget>[
-                Icon(
-                  Icons.edit,
-                  size: 15,
-                ),
-                Text("Prospectus",
-                    style: TextStyle(
-                        color: Colors.grey.shade600,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500))
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "UNDERWRITER(S)",
-                  style: TextStyle(
-                      color: Color(0xFF002b47),
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 7),
-                  child: Text("ABEL/NOSER CORP.-ABN AMRO SECURITIES \n(USA)LLC",
-                      style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400)),
-                )
-              ],
-            ),
-          ],
-        ),
       ),
     );
   }

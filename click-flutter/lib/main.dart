@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'order_details.dart';
 import 'pages/my_order.dart';
 
-//void main() => runApp(chooseWidget(window.defaultRouteName));
+void main() => runApp(chooseWidget(window.defaultRouteName));
 
 Widget chooseWidget(String route) {
   switch (route) {
@@ -25,7 +25,7 @@ Widget chooseWidget(String route) {
   }
 }
 
-void main() => runApp((MyFlutterActivity()));
+//void main() => runApp((MyFlutterActivity()));
 
 class MyFlutterActivity extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _MyFlutterActivityState extends State<MyFlutterActivity> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-     // home: OrderDetails(),
+      // home: OrderDetails(),
       home: LoginScreen(),
     );
   }
@@ -64,9 +64,11 @@ class _MyHomePageState extends State<MyHomePage>
       appBar: new AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Image.asset("assets/images/1app-02.png",
-        height: 70,
-        width: 120,),
+        title: Image.asset(
+          "assets/images/1app-02.png",
+          height: 70,
+          width: 120,
+        ),
         // actions: <Widget>[
         //   Icon(
         //     Icons.search,
@@ -123,10 +125,9 @@ class _MyHomePageState extends State<MyHomePage>
         controller: _controller,
         children: <Widget>[
           AllOffering(),
-         MyOrder(),
+          MyOrder(),
         ],
       ),
     );
   }
 }
-

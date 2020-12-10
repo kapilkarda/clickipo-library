@@ -81,15 +81,22 @@ class _MyOrderState extends State<MyOrder> {
                 )
               : Expanded(
                   child: ListView.builder(
-                      itemCount: 5,
+                      itemCount: orderdata.length,
                       itemBuilder: (context, index) {
                         return Dismissible(
                           key: UniqueKey(),
                           onDismissed: (direction) {
+                            var ordhData = {
+                              "ordname": orderdata[index].name,
+                              "orderdo":
+                                  orderdata[index].ordrDollarShare.toString(),
+                              "orderh": orderdata[index].orders
+                            };
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => OrderHostory()));
+                                    builder: (context) =>
+                                        OrderHostory(ordhData)));
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 0.5, right: 0.5),
@@ -120,7 +127,8 @@ class _MyOrderState extends State<MyOrder> {
                                           height: 80,
                                           width: 80,
                                           color: Colors.white,
-                                          child: Icon(Icons.ac_unit),
+                                          child: Image.network(
+                                              "https:${orderdata[index].logoSmall}"),
                                         ),
                                         SizedBox(
                                           width: 10,
@@ -133,11 +141,12 @@ class _MyOrderState extends State<MyOrder> {
                                               orderdata[index].name,
                                               style: TextStyle(
                                                   fontSize: 20,
-                                                  color: Color(0xFF002b47),
+                                                  color:
+                                                      Colors.blueGrey.shade700,
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             SizedBox(
-                                              height: 10,
+                                              height: 5,
                                             ),
                                             Row(
                                               children: [
@@ -149,18 +158,45 @@ class _MyOrderState extends State<MyOrder> {
                                                       fontWeight:
                                                           FontWeight.w400),
                                                 ),
-                                                Text(
-                                                    new String.fromCharCodes(
-                                                            new Runes(
-                                                                '\u0024')) +
-                                                        orderdata[index]
-                                                            .ordrDollarShare
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                        color: Colors.black54,
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.w400))
+                                                Row(
+                                                  children: [
+                                                    (orderdata[index]
+                                                                .ordrDollarShare
+                                                                .toString() !=
+                                                            "0")
+                                                        ? Text("")
+                                                        : Text(
+                                                            "${String.fromCharCode(036)} "),
+                                                    (orderdata[index]
+                                                                .ordrDollarShare
+                                                                .toString() !=
+                                                            "0")
+                                                        ? Text(
+                                                            orderdata[index]
+                                                                .orders[0]
+                                                                .requestedShares
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black54,
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400))
+                                                        : Text(
+                                                            orderdata[index]
+                                                                .orders[0]
+                                                                .requestedAmount
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black54,
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400))
+                                                  ],
+                                                )
                                               ],
                                             ),
                                             Row(
@@ -171,7 +207,10 @@ class _MyOrderState extends State<MyOrder> {
                                                         fontSize: 17,
                                                         fontWeight:
                                                             FontWeight.w400)),
-                                                Text(orderdata[index].status,
+                                                Text(
+                                                    orderdata[index]
+                                                        .orders[0]
+                                                        .status,
                                                     style: TextStyle(
                                                         color: Colors.black54,
                                                         fontSize: 17,

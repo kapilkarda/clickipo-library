@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class OrderHostory extends StatefulWidget {
+  final ordhData;
+  OrderHostory(this.ordhData);
   @override
   _OrderHostoryState createState() => _OrderHostoryState();
 }
@@ -8,6 +10,7 @@ class OrderHostory extends StatefulWidget {
 class _OrderHostoryState extends State<OrderHostory> {
   @override
   Widget build(BuildContext context) {
+    print("fgf ${widget.ordhData['orderdo']}");
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -21,13 +24,135 @@ class _OrderHostoryState extends State<OrderHostory> {
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text("Order History",
-            style: TextStyle(color: Color(0xFF002b47), fontSize: 18)),
+        title: Image.asset(
+          "assets/images/1app-02.png",
+          height: 60,
+          width: 100,
+        ),
       ),
       body: ListView.builder(
-          itemCount: 2,
+          itemCount: widget.ordhData['orderh'].length,
           itemBuilder: (context, index) {
-            return Text("hs");
+            return Container(
+              margin: EdgeInsets.only(left: 0.5, right: 0.5),
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    color: Colors.grey.shade200,
+                    padding: EdgeInsets.only(
+                        left: 10, right: 10, top: 10, bottom: 10),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 80,
+                          width: 80,
+                          color: Colors.white,
+                          child: Image.network(
+                              "https://stagingcdn.clickipo.com/companies/logos/78965478_6e123778-f6f8-49e7-a0fc-3b8684da5054/small-feedfleet.png"),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.ordhData['ordname'],
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.blueGrey.shade700,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "Order: ",
+                                  style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                Row(
+                                  children: [
+                                    (widget.ordhData['orderdo'] == "0")
+                                        ? Text(
+                                            "${String.fromCharCode(036)}",
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                        : Text(""),
+                                    (widget.ordhData['orderdo'] == "0")
+                                        ? Text(
+                                            widget.ordhData['orderh'][index]
+                                                .requestedAmount
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                        : Text(
+                                            widget.ordhData['orderh'][index]
+                                                .requestedShares
+                                                .toString(),
+                                            style: TextStyle(
+                                                color: Colors.black54,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text("Status: ",
+                                    style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w400)),
+                                Text(
+                                  widget.ordhData['orderh'][index].status,
+                                  style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text("Date: ",
+                                    style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w400)),
+                                Text(
+                                  widget.ordhData['orderh'][index].createdAt,
+                                  style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.black,
+                  )
+                ],
+              ),
+            );
           }),
     );
   }

@@ -20,7 +20,6 @@ class _AllOfferingState extends State<AllOffering> {
 
   getInterestedType(interData) async {
     var interestedType = await Providers().getInteresterd(interData);
-    print(json.encode(interestedType));
     if (interestedType.error == 0) {
       setState(() {
         //offeringdata = offeringType.data;
@@ -79,10 +78,11 @@ class _AllOfferingState extends State<AllOffering> {
                             Column(
                               children: [
                                 Container(
-                                  color: Colors.yellow.shade100,
                                   height: 50,
                                   width: 50,
-                                  margin: EdgeInsets.only(bottom: 5),
+                                  color: Colors.white,
+                                  child: Image.network(
+                                      "https:${offeringdata[index].logoSmall}"),
                                 ),
                                 Center(
                                   child: Text(
@@ -113,48 +113,96 @@ class _AllOfferingState extends State<AllOffering> {
                                               fontSize: 18,
                                               fontWeight: FontWeight.w600)),
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          tap == -1 ? tap = index : tap = -1;
-                                          check = !check;
-                                          print("rtrst $tap");
-                                          print("hghs $check");
-                                        });
-                                        var interData = {
-                                          "ext_id": offeringdata[index].extId,
-                                          "save": check
-                                        };
-                                        getInterestedType(interData);
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: (tap == index && check == true)
-                                              ? Color(0xFF8bc53f)
-                                              : Colors.white,
-                                          border: Border.all(
-                                            width: 1,
-                                            color: Color(0xFF8bc53f),
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.only(
-                                            left: 5,
-                                            right: 5,
-                                            top: 5,
-                                            bottom: 5),
-                                        child: Text(
-                                          "Interested?",
-                                          style: TextStyle(
-                                              color: (tap == index)
-                                                  ? Colors.white
-                                                  : Color(0xFF8bc53f)),
-                                        ),
-                                      ),
-                                    )
+                                    // InkWell(
+                                    //   onTap: () {
+                                    //     setState(() {
+                                    //       tap == -1 ? tap = index : tap = -1;
+                                    //       check = !check;
+                                    //       print("rtrst $tap");
+                                    //       print("hghs $check");
+                                    //     });
+                                    //     var interData = {
+                                    //       "ext_id": offeringdata[index].extId,
+                                    //       "save": check
+                                    //     };
+                                    //     getInterestedType(interData);
+                                    //   },
+                                    //   child: Container(
+                                    //     decoration: BoxDecoration(
+                                    //       color: (tap == index && check == true)
+                                    //           ? Color(0xFF8bc53f)
+                                    //           : Colors.white,
+                                    //       border: Border.all(
+                                    //         width: 1,
+                                    //         color: Color(0xFF8bc53f),
+                                    //       ),
+                                    //     ),
+                                    //     padding: EdgeInsets.only(
+                                    //         left: 5,
+                                    //         right: 5,
+                                    //         top: 5,
+                                    //         bottom: 5),
+                                    //     child: Text(
+                                    //       "Interested?",
+                                    //       style: TextStyle(
+                                    //           color: (tap == index)
+                                    //               ? Colors.white
+                                    //               : Color(0xFF8bc53f)),
+                                    //     ),
+                                    //   ),
+                                    // )
+
+                                    (offeringdata[index].followed == true)
+                                        ? InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                check = !check;
+                                                print("j $check");
+                                              });
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Color(0xFF8bc53f),
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Color(0xFF8bc53f),
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.only(
+                                                  left: 7,
+                                                  right: 7,
+                                                  top: 5,
+                                                  bottom: 5),
+                                              child: Text(
+                                                "Interested",
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          )
+                                        : Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                width: 1,
+                                                color: Color(0xFF8bc53f),
+                                              ),
+                                            ),
+                                            padding: EdgeInsets.only(
+                                                left: 5,
+                                                right: 5,
+                                                top: 5,
+                                                bottom: 5),
+                                            child: Text(
+                                              "Interested?",
+                                              style: TextStyle(
+                                                  color: Color(0xFF8bc53f)),
+                                            ),
+                                          )
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: 5,
                                 ),
                                 Row(
                                   mainAxisAlignment:
@@ -165,11 +213,20 @@ class _AllOfferingState extends State<AllOffering> {
                                             fontSize: 15,
                                             color: Colors.black54,
                                             fontWeight: FontWeight.w500)),
-                                    Text("TBD",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black54,
-                                            fontWeight: FontWeight.w500))
+                                    (offeringdata[index].minPrice == null)
+                                        ? Text("TBD",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.w500))
+                                        : Text(
+                                            offeringdata[index]
+                                                .tradeDate
+                                                .substring(0, 10),
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.w500))
                                   ],
                                 ),
                                 Row(
@@ -181,11 +238,26 @@ class _AllOfferingState extends State<AllOffering> {
                                             fontSize: 15,
                                             color: Colors.black54,
                                             fontWeight: FontWeight.w500)),
-                                    Text("TBD",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.black54,
-                                            fontWeight: FontWeight.w500))
+                                    (offeringdata[index].minPrice == null)
+                                        ? Text("TBD",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.w500))
+                                        : Text(
+                                            offeringdata[index]
+                                                    .minPrice
+                                                    .toString() +
+                                                ' ' +
+                                                '-' +
+                                                ' ' +
+                                                offeringdata[index]
+                                                    .maxPrice
+                                                    .toString(),
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black54,
+                                                fontWeight: FontWeight.w500))
                                   ],
                                 ),
                               ],

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:counter_flutter/model/buying_power.dart';
 import 'package:counter_flutter/model/interested_model.dart';
 import 'package:counter_flutter/model/login_model.dart';
 import 'package:counter_flutter/model/modifyOrder_model.dart';
@@ -8,6 +9,7 @@ import 'package:counter_flutter/model/offeringDetails_model.dart';
 import 'package:counter_flutter/model/offering_model.dart';
 import 'package:counter_flutter/model/order_model.dart';
 import 'package:counter_flutter/model/order_reconfirm.dart';
+import 'package:counter_flutter/model/placeOrder_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,7 +32,6 @@ class Providers {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String authToken = prefs.getString('auth_token');
     final String url = baseUrl + "v1/offerings";
-    print("ghgh $url");
     final client = new http.Client();
     final response = await client.get(
       url,
@@ -133,5 +134,36 @@ class Providers {
       body: json.encode(interData),
     );
     return InterstedModel.fromJson(json.decode(response.body));
+  }
+
+  Future<PlaceOrderModel> getplaceOrder(ordRedata) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String authToken = prefs.getString('auth_token');
+    final String url = baseUrl + "orders";
+    final client = new http.Client();
+    final response = await client.post(
+      url,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: authToken
+      },
+      body: json.encode(ordRedata),
+    );
+    return PlaceOrderModel.fromJson(json.decode(response.body));
+  }
+
+  Future<BuyingPowerModel> getBuyingPower() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String authToken = prefs.getString('auth_token');
+    final String url = baseUrl + "accounts/buying_power";
+    final client = new http.Client();
+    final response = await client.get(
+      url,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: authToken
+      },
+    );
+    return BuyingPowerModel.fromJson(json.decode(response.body));
   }
 }

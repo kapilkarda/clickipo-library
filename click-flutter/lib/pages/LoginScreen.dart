@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'myhomepage.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -32,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       var addressData = {
         "email": email,
         "encrypted_password":
-        "4ff3e8922e53309578d694c2dafb41d744af5c4004716f178552449149cd502e9c7022d18cdef4bbe796652d0862f019653e96796ad5d05bffb0f44baaa33528",
+            "4ff3e8922e53309578d694c2dafb41d744af5c4004716f178552449149cd502e9c7022d18cdef4bbe796652d0862f019653e96796ad5d05bffb0f44baaa33528",
         "client_ip": "47.247.56.187"
       };
       var logdata = await Providers().getLogin(addressData);
@@ -59,14 +61,14 @@ class _LoginScreenState extends State<LoginScreen> {
         key: _scaffoldKey,
         body: Padding(
           padding:
-          const EdgeInsets.only(top: 45, left: 20, right: 20, bottom: 20),
+              const EdgeInsets.only(top: 45, left: 20, right: 20, bottom: 20),
           child: Form(
             key: _formKey,
             child: ListView(
               children: [
                 Center(
                     child:
-                    Image.asset("assets/images/1app-02.png", height: 65)),
+                        Image.asset("assets/images/1app-02.png", height: 65)),
                 SizedBox(
                   height: 15,
                 ),

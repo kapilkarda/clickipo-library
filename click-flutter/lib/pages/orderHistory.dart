@@ -48,8 +48,8 @@ class _OrderHostoryState extends State<OrderHostory> {
                           height: 80,
                           width: 80,
                           color: Colors.white,
-                          child: Image.network(
-                              "https://stagingcdn.clickipo.com/companies/logos/78965478_6e123778-f6f8-49e7-a0fc-3b8684da5054/small-feedfleet.png"),
+                          child:
+                              Image.network("https:${widget.ordhData['logo']}"),
                         ),
                         SizedBox(
                           width: 10,

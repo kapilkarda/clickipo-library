@@ -10,6 +10,7 @@ import 'package:counter_flutter/model/offering_model.dart';
 import 'package:counter_flutter/model/order_model.dart';
 import 'package:counter_flutter/model/order_reconfirm.dart';
 import 'package:counter_flutter/model/placeOrder_model.dart';
+import 'package:counter_flutter/model/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -165,5 +166,20 @@ class Providers {
       },
     );
     return BuyingPowerModel.fromJson(json.decode(response.body));
+  }
+
+  Future<UserModel> getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String authToken = prefs.getString('auth_token');
+    final String url = baseUrl + "users";
+    final client = new http.Client();
+    final response = await client.get(
+      url,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: authToken
+      },
+    );
+    return UserModel.fromJson(json.decode(response.body));
   }
 }

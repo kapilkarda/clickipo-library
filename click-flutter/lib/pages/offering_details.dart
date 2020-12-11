@@ -188,7 +188,7 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    PlaceOrderScreen(placedata)));
+                                    PlaceOrderScreen()));
                       },
                       child: Container(
                         width: double.infinity,

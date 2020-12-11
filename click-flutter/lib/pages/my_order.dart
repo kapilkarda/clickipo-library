@@ -7,7 +7,9 @@ import 'package:counter_flutter/repository/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'LoginScreen.dart';
+import 'modifyScreen.dart';
 import 'orderHistory.dart';
+import 'order_details.dart';
 import 'order_recogination.dart';
 
 class MyOrder extends StatefulWidget {
@@ -53,27 +55,35 @@ class _MyOrderState extends State<MyOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           GestureDetector(
             child: Container(
               width: double.infinity,
-              color: Colors.grey.shade300,
-              padding: EdgeInsets.only(top: 10, bottom: 10),
+              color: Colors.grey.shade400,
+              padding: EdgeInsets.only(top: 8, bottom: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.info, color: Color(0xFF00ccff)),
+                  Icon(
+                    Icons.info,
+                    color: Colors.teal.shade400,
+                    size: 16,
+                  ),
                   Text(
-                    "Swipe right to see order history.",
-                    style: TextStyle(fontSize: 17, color: Color(0xFF00ccff)),
+                    " Swipe right to see order history.",
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.teal.shade400,
+                        fontWeight: FontWeight.w400),
                   ),
                 ],
               ),
             ),
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           (orderdata == null)
               ? CircularLoadingWidget(
@@ -90,7 +100,8 @@ class _MyOrderState extends State<MyOrder> {
                               "ordname": orderdata[index].name,
                               "orderdo":
                                   orderdata[index].ordrDollarShare.toString(),
-                              "orderh": orderdata[index].orders
+                              "orderh": orderdata[index].orders,
+                              "logo": orderdata[index].logoSmall
                             };
                             Navigator.push(
                                 context,
@@ -109,18 +120,21 @@ class _MyOrderState extends State<MyOrder> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    setState(() {
-                                      tap == -1 ? tap = index : tap = -1;
-                                    });
+                                    if (orderdata[index].orders[0].status ==
+                                        "active") {
+                                      setState(() {
+                                        tap == -1 ? tap = index : tap = -1;
+                                      });
+                                    } else {}
                                   },
                                   child: Container(
                                     width: double.infinity,
-                                    color: Colors.grey.shade200,
+                                    color: (orderdata[index].orders[0].status ==
+                                            "active")
+                                        ? Colors.white
+                                        : Colors.grey.shade200,
                                     padding: EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 10,
-                                        bottom: 10),
+                                        left: 10, right: 10, top: 5, bottom: 5),
                                     child: Row(
                                       children: [
                                         Container(
@@ -140,10 +154,10 @@ class _MyOrderState extends State<MyOrder> {
                                             Text(
                                               orderdata[index].name,
                                               style: TextStyle(
-                                                  fontSize: 20,
+                                                  fontSize: 17,
                                                   color:
-                                                      Colors.blueGrey.shade700,
-                                                  fontWeight: FontWeight.w500),
+                                                      Colors.blueGrey.shade600,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(
                                               height: 5,
@@ -153,8 +167,9 @@ class _MyOrderState extends State<MyOrder> {
                                                 Text(
                                                   "Order: ",
                                                   style: TextStyle(
-                                                      color: Colors.black54,
-                                                      fontSize: 17,
+                                                      color: Colors
+                                                          .blueGrey.shade400,
+                                                      fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.w400),
                                                 ),
@@ -166,7 +181,12 @@ class _MyOrderState extends State<MyOrder> {
                                                             "0")
                                                         ? Text("")
                                                         : Text(
-                                                            "${String.fromCharCode(036)} "),
+                                                            "${String.fromCharCode(036)}",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .blueGrey
+                                                                    .shade400),
+                                                          ),
                                                     (orderdata[index]
                                                                 .ordrDollarShare
                                                                 .toString() !=
@@ -178,8 +198,9 @@ class _MyOrderState extends State<MyOrder> {
                                                                 .toString(),
                                                             style: TextStyle(
                                                                 color: Colors
-                                                                    .black54,
-                                                                fontSize: 17,
+                                                                    .blueGrey
+                                                                    .shade500,
+                                                                fontSize: 15,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400))
@@ -190,8 +211,9 @@ class _MyOrderState extends State<MyOrder> {
                                                                 .toString(),
                                                             style: TextStyle(
                                                                 color: Colors
-                                                                    .black54,
-                                                                fontSize: 17,
+                                                                    .blueGrey
+                                                                    .shade500,
+                                                                fontSize: 15,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w400))
@@ -203,17 +225,24 @@ class _MyOrderState extends State<MyOrder> {
                                               children: [
                                                 Text("Status: ",
                                                     style: TextStyle(
-                                                        color: Colors.black54,
-                                                        fontSize: 17,
+                                                        color: Colors
+                                                            .blueGrey.shade400,
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                 Text(
-                                                    orderdata[index]
-                                                        .orders[0]
-                                                        .status,
+                                                    (orderdata[index]
+                                                                .orders[0]
+                                                                .status ==
+                                                            "active")
+                                                        ? "Pending"
+                                                        : orderdata[index]
+                                                            .orders[0]
+                                                            .status,
                                                     style: TextStyle(
-                                                        color: Colors.black54,
-                                                        fontSize: 17,
+                                                        color: Colors
+                                                            .blueGrey.shade400,
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.w400))
                                               ],
@@ -222,8 +251,9 @@ class _MyOrderState extends State<MyOrder> {
                                               children: [
                                                 Text("Date: ",
                                                     style: TextStyle(
-                                                        color: Colors.black54,
-                                                        fontSize: 17,
+                                                        color: Colors
+                                                            .blueGrey.shade500,
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                 Text(
@@ -231,8 +261,9 @@ class _MyOrderState extends State<MyOrder> {
                                                         .createdAt
                                                         .substring(0, 10),
                                                     style: TextStyle(
-                                                        color: Colors.black54,
-                                                        fontSize: 17,
+                                                        color: Colors
+                                                            .blueGrey.shade400,
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.w400))
                                               ],
@@ -245,8 +276,8 @@ class _MyOrderState extends State<MyOrder> {
                                 ),
                                 (tap == index)
                                     ? Container(
-                                        color: Colors.grey.shade400,
-                                        height: 65,
+                                        color: Colors.blueGrey.shade300,
+                                        height: 57,
                                         width: double.infinity,
                                         padding: EdgeInsets.only(
                                             left: 14,
@@ -268,10 +299,11 @@ class _MyOrderState extends State<MyOrder> {
                                               },
                                               child: Container(
                                                 decoration: BoxDecoration(
-                                                    color: Colors.orange,
+                                                    color:
+                                                        Colors.orange.shade800,
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            5)),
+                                                            3)),
                                                 width: (29 / 100) *
                                                     MediaQuery.of(context)
                                                         .size
@@ -287,29 +319,66 @@ class _MyOrderState extends State<MyOrder> {
                                               ),
                                             ),
                                             InkWell(
+                                              // onTap: () {
+                                              //   var viewData = {
+                                              //     "exid":
+                                              //         orderdata[index].extId,
+                                              //     "mintickersize":
+                                              //         orderdata[index]
+                                              //             .minTicketSize,
+                                              //     "maxtickersize":
+                                              //         orderdata[index]
+                                              //             .maxTicketSize,
+                                              //     "maxprice":
+                                              //         orderdata[index].maxPrice,
+                                              //     "minprice":
+                                              //         orderdata[index].minPrice,
+                                              //     "ioicutoff": orderdata[index]
+                                              //         .ioiCutoffDatetime,
+                                              //   };
+                                              //   Navigator.push(
+                                              //       context,
+                                              //       MaterialPageRoute(
+                                              //           builder: (context) =>
+                                              //               OrderRecogination(
+                                              //                   viewData)));
+                                              // },
+
                                               onTap: () {
-                                                var viewData = {
-                                                  "exid":
-                                                      orderdata[index].extId,
-                                                  "mintickersize":
+                                                var orderDetails = {
+                                                  "logo_small": orderdata[index]
+                                                      .logoSmall,
+                                                  "orderDollarsh":
                                                       orderdata[index]
-                                                          .minTicketSize,
-                                                  "maxtickersize":
+                                                          .ordrDollarShare,
+                                                  "requestAmo": orderdata[index]
+                                                      .orders[index]
+                                                      .requestedAmount,
+                                                  "requestShare":
                                                       orderdata[index]
-                                                          .maxTicketSize,
-                                                  "maxprice":
-                                                      orderdata[index].maxPrice,
-                                                  "minprice":
+                                                          .orders[0]
+                                                          .requestedShares,
+                                                  "tickerSy": orderdata[index]
+                                                      .tickerSymbol,
+                                                  "finalPrice": orderdata[index]
+                                                      .finalShares,
+                                                  "minPrice":
                                                       orderdata[index].minPrice,
-                                                  "ioicutoff": orderdata[index]
-                                                      .ioiCutoffDatetime,
+                                                  "maxPrice":
+                                                      orderdata[index].maxPrice,
+                                                  "tradedate": orderdata[index]
+                                                      .tradeDate,
+                                                  "underwrite": orderdata[0]
+                                                      .underwritersList,
+                                                  "prosp": orderdata[index]
+                                                      .prospectusUrl
                                                 };
                                                 Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            OrderRecogination(
-                                                                viewData)));
+                                                            OrderDetails(
+                                                                orderDetails)));
                                               },
                                               child: Container(
                                                 margin:
@@ -318,7 +387,7 @@ class _MyOrderState extends State<MyOrder> {
                                                     color: Colors.white,
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            5)),
+                                                            3)),
                                                 width: (29 / 100) *
                                                     MediaQuery.of(context)
                                                         .size
@@ -335,23 +404,34 @@ class _MyOrderState extends State<MyOrder> {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                var modiData = {
-                                                  "ext_id": "123123432123",
-                                                  "buying_power": 13802.0,
-                                                  "mpid": "TRAD",
-                                                  "account_id": "varun2020",
-                                                  "attestation_to_rules_5130_and_5131":
-                                                      1,
-                                                  "dsp": 0,
-                                                  "requested_amount": 1200.0
+                                                var modifyDetails = {
+                                                  "logo_small": orderdata[index]
+                                                      .logoSmall,
+                                                  "minPrice":
+                                                      orderdata[index].minPrice,
+                                                  "maxPrice":
+                                                      orderdata[index].maxPrice,
+                                                  "ticminPrice":
+                                                      orderdata[index]
+                                                          .minTicketSize,
+                                                  "ticmaxPrice":
+                                                      orderdata[index]
+                                                          .maxTicketSize,
+                                                  "finalPrice": orderdata[index]
+                                                      .finalShares,
+                                                  "orderDollarsh":
+                                                      orderdata[index]
+                                                          .ordrDollarShare,
+                                                  "buyingp": orderdata[index]
+                                                      .orders[0]
+                                                      .buyingPowerAsOf
                                                 };
-                                                print(modiData);
-                                                getModify(modiData);
-                                                // Navigator.push(
-                                                //     context,
-                                                //     MaterialPageRoute(
-                                                //         builder: (context) =>
-                                                //             OrderRecogination()));
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ModifyOrder(
+                                                                modifyDetails)));
                                               },
                                               child: Container(
                                                 margin:
@@ -360,7 +440,7 @@ class _MyOrderState extends State<MyOrder> {
                                                     color: Color(0xFF8bc53f),
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            5)),
+                                                            3)),
                                                 width: (29 / 100) *
                                                     MediaQuery.of(context)
                                                         .size

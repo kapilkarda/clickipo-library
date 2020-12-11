@@ -3,6 +3,8 @@ import 'package:counter_flutter/pages/my_order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'myhomepage.dart';
+
 class CongratulationScreen extends StatefulWidget {
   @override
   _CongratulationScreenState createState() => _CongratulationScreenState();
@@ -45,18 +47,18 @@ class _CongratulationScreenState extends State<CongratulationScreen> {
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         text:
-                        """TradeStation has accepted your conditional\n order to buy for\n""",
+                            """TradeStation has accepted your conditional\n order to buy for\n""",
                         style: TextStyle(fontSize: 16, color: Colors.black),
                         children: <TextSpan>[
                           TextSpan(
                               text:
-                              'Up to ${String.fromCharCode(036)}12,000 worth of AAAJJ\n ',
+                                  'Up to ${String.fromCharCode(036)}12,000 worth of AAAJJ\n ',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           TextSpan(
                               text: '(approximately 800 shares).\n\n',
                               style:
-                              TextStyle(fontSize: 16, color: Colors.black)),
+                                  TextStyle(fontSize: 16, color: Colors.black)),
                         ],
                       ),
                     ),
@@ -95,11 +97,11 @@ class _CongratulationScreenState extends State<CongratulationScreen> {
                             // color: Colors.lime,
                             child: Center(
                                 child: Text(
-                                  "My Orders",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ))),
+                              "My Orders",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ))),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -125,11 +127,11 @@ class _CongratulationScreenState extends State<CongratulationScreen> {
                             // color: Colors.lime,
                             child: Center(
                                 child: Text(
-                                  "Done",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ))),
+                              "Done",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ))),
                       )
                     ],
                   ),

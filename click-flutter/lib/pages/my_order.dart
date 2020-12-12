@@ -21,19 +21,6 @@ class _MyOrderState extends State<MyOrder> {
   var tap = -1;
   List<OrderData> orderdata;
 
-  getModify(modiData) async {
-    var morderType = await Providers().getModifyOrder(modiData);
-    print(json.encode(morderType));
-    if (morderType.error == 0) {
-      setState(() {
-        //orderdata = orderrecType.data;
-      });
-    } else if (morderType.error == 401) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
-    } else {}
-  }
-
   getOfferingTyp() async {
     var orderType = await Providers().getOrderList();
     if (orderType.error == 0) {
@@ -405,6 +392,8 @@ class _MyOrderState extends State<MyOrder> {
                                             InkWell(
                                               onTap: () {
                                                 var modifyDetails = {
+                                                  "exid":
+                                                      orderdata[index].extId,
                                                   "logo_small": orderdata[index]
                                                       .logoSmall,
                                                   "minPrice":
@@ -424,7 +413,23 @@ class _MyOrderState extends State<MyOrder> {
                                                           .ordrDollarShare,
                                                   "buyingp": orderdata[index]
                                                       .orders[0]
-                                                      .buyingPowerAsOf
+                                                      .buyingPowerAsOf,
+                                                  "requestAmo": orderdata[index]
+                                                      .orders[index]
+                                                      .requestedAmount,
+                                                  "requestShare":
+                                                      orderdata[index]
+                                                          .orders[0]
+                                                          .requestedShares,
+                                                  "dsp": orderdata[index].dsp,
+                                                  "account_id": orderdata[index]
+                                                      .orders[0]
+                                                      .brokerConnection
+                                                      .accountId,
+                                                  "mpid": orderdata[index]
+                                                      .orders[0]
+                                                      .brokerConnection
+                                                      .mpid
                                                 };
                                                 Navigator.push(
                                                     context,

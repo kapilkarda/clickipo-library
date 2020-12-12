@@ -83,16 +83,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 25,
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 10, right: 10),
+                  padding:
+                      EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
-                      border: Border.all(width: 1.5, color: Color(0xff9AB35B))),
+                      border: Border.all(width: 1.2, color: Color(0xff98cd4a))),
                   child: TextFormField(
                     initialValue: 'varun@clickipoholdings.com',
                     onSaved: (value) {
                       email = value;
                     },
-                    style: TextStyle(color: Color(0xff9AB35B)),
+                    style: TextStyle(color: Colors.black54, fontSize: 17),
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Enter Email",
@@ -103,15 +104,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 12,
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 10, right: 10),
+                  padding:
+                      EdgeInsets.only(left: 10, right: 10, top: 2, bottom: 2),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(7),
-                      border: Border.all(width: 1.5, color: Color(0xff9AB35B))),
+                      border: Border.all(width: 1.2, color: Color(0xff98cd4a))),
                   child: TextFormField(
+                    initialValue: "asdfasdfas",
                     onSaved: (value) {
                       password = value;
                     },
-                    style: TextStyle(color: Color(0xff9AB35B)),
+                    style: TextStyle(color: Color(0xff98cd4a)),
                     obscureText: _obscureText,
                     decoration: InputDecoration(
                         suffixIcon: GestureDetector(
@@ -143,9 +146,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Theme(
                           data: Theme.of(context).copyWith(
-                              unselectedWidgetColor: Color(0xff9AB35B)),
+                              unselectedWidgetColor: Color(0xff98cd4a)),
                           child: Checkbox(
-                            activeColor: Color(0xff9AB35B),
+                            activeColor: Color(0xff98cd4a),
                             value: monVal,
                             onChanged: (bool value) {
                               setState(() {
@@ -156,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Text("Remember Me",
                             style: TextStyle(
-                                color: Color(0xff9AB35B),
+                                color: Color(0xff98cd4a),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                       ],
@@ -165,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: () {},
                       child: Text("Sign in with TouchId",
                           style: TextStyle(
-                              color: Color(0xff9AB35B),
+                              color: Color(0xff98cd4a),
                               fontSize: 16,
                               fontWeight: FontWeight.w500)),
                     )
@@ -184,19 +187,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           gradient: LinearGradient(
                               begin: Alignment.bottomLeft,
                               end: Alignment.topRight,
-                              colors: [Color(0xFF98cd4a), Color(0xFF649f49)])),
-                      height: 50,
+                              colors: [Color(0xff98cd4a), Color(0xFF649f49)])),
+                      height: 45,
                       width: MediaQuery.of(context).size.width * 0.8,
                       // color: Colors.lime,
                       child: Center(
                           child: Text("Log in",
                               style: TextStyle(
                                 color: Colors.white,
+                                fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               )))),
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 35,
                 ),
                 Center(
                   child: Text("Forgot Password?",
@@ -211,9 +215,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Center(
                   child: Text("Sign up",
                       style: TextStyle(
-                          color: Colors.blueGrey,
+                          color: Colors.blueGrey.shade800,
                           fontSize: 18,
-                          fontWeight: FontWeight.w500)),
+                          fontWeight: FontWeight.bold)),
                 ),
               ],
             ),

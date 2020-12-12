@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:counter_flutter/element/circluarloader_widget.dart';
 import 'package:counter_flutter/model/offering_model.dart';
+import 'package:counter_flutter/model/user_model.dart';
 import 'package:counter_flutter/repository/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'LoginScreen.dart';
+import 'modifyScreen.dart';
 import 'offering_details.dart';
 
 class AllOffering extends StatefulWidget {
@@ -17,6 +20,17 @@ class _AllOfferingState extends State<AllOffering> {
   var check = false;
 
   List<OfferingData> offeringdata;
+  UserData userdata;
+
+  getUserType() async {
+    var userType = await Providers().getUser();
+    if (userType.error == 0) {
+      userdata = userType.data;
+    } else if (userType.error == 401) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } else {}
+  }
 
   getInterestedType(interData) async {
     var interestedType = await Providers().getInteresterd(interData);
@@ -46,6 +60,7 @@ class _AllOfferingState extends State<AllOffering> {
   void initState() {
     super.initState();
     getOfferingTyp();
+    getUserType();
   }
 
   @override
@@ -113,6 +128,275 @@ class _AllOfferingState extends State<AllOffering> {
                                               fontSize: 18,
                                               fontWeight: FontWeight.w600)),
                                     ),
+
+                                    (offeringdata[index].availableToOrder ==
+                                                0 &&
+                                            userdata.brokerConnection
+                                                    .toString ==
+                                                null)
+                                        ? (offeringdata[index].followed == true)
+                                            ? Container(
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFF8bc53f),
+                                                  border: Border.all(
+                                                    width: 1,
+                                                    color: Color(0xFF8bc53f),
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    left: 7,
+                                                    right: 7,
+                                                    top: 2,
+                                                    bottom: 2),
+                                                child: Text(
+                                                  "Intrested",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            : Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  border: Border.all(
+                                                    width: 1,
+                                                    color: Color(0xFF8bc53f),
+                                                  ),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    left: 7,
+                                                    right: 7,
+                                                    top: 2,
+                                                    bottom: 2),
+                                                child: Text(
+                                                  "Intrested?",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                        : (offeringdata[index]
+                                                    .availableToOrder ==
+                                                1)
+                                            ? (offeringdata[index].maxPrice !=
+                                                    0)
+                                                ? (offeringdata[index]
+                                                            .hasOrder ==
+                                                        false)
+                                                    ? Text("Place Order")
+                                                    : InkWell(
+                                                        onTap: () {
+                                                          var modifyDetails = {
+                                                            "exid":
+                                                                offeringdata[
+                                                                        index]
+                                                                    .extId,
+                                                            "logo_small":
+                                                                offeringdata[
+                                                                        index]
+                                                                    .logoSmall,
+                                                            "minPrice":
+                                                                offeringdata[
+                                                                        index]
+                                                                    .minPrice,
+                                                            "maxPrice":
+                                                                offeringdata[
+                                                                        index]
+                                                                    .maxPrice,
+                                                            "ticminPrice":
+                                                                offeringdata[
+                                                                        index]
+                                                                    .minTicketSize,
+                                                            "ticmaxPrice":
+                                                                offeringdata[
+                                                                        index]
+                                                                    .maxTicketSize,
+                                                            "finalPrice":
+                                                                offeringdata[
+                                                                        index]
+                                                                    .finalShares,
+                                                            "orderDollarsh":
+                                                                offeringdata[
+                                                                        index]
+                                                                    .ordrDollarShare,
+                                                            "buyingp": userdata
+                                                                .brokerConnection
+                                                                .buyingPower,
+                                                            "dsp": offeringdata[
+                                                                    index]
+                                                                .dsp,
+                                                            "account_id": userdata
+                                                                .brokerConnection
+                                                                .accountId,
+                                                            "mpid": userdata
+                                                                .brokerConnection
+                                                                .mpid
+                                                          };
+                                                          print(
+                                                              "jkjkj   $modifyDetails");
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      ModifyOrder(
+                                                                          modifyDetails)));
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors
+                                                                .grey.shade700,
+                                                            border: Border.all(
+                                                              width: 1,
+                                                              color: Color(
+                                                                  0xFF8bc53f),
+                                                            ),
+                                                          ),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 7,
+                                                                  right: 7,
+                                                                  top: 2,
+                                                                  bottom: 2),
+                                                          child: Text(
+                                                            "Modify",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ),
+                                                      )
+                                                : (offeringdata[index]
+                                                            .followed ==
+                                                        true)
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          check = !check;
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Color(
+                                                                0xFF8bc53f),
+                                                            border: Border.all(
+                                                              width: 1,
+                                                              color: Color(
+                                                                  0xFF8bc53f),
+                                                            ),
+                                                          ),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 7,
+                                                                  right: 7,
+                                                                  top: 2,
+                                                                  bottom: 2),
+                                                          child: Text(
+                                                            "Intrested",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                            width: 1,
+                                                            color: Color(
+                                                                0xFF8bc53f),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 7,
+                                                                right: 7,
+                                                                top: 2,
+                                                                bottom: 2),
+                                                        child: Text(
+                                                          "Intrested?",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      )
+                                            : (offeringdata[index].hasOrder ==
+                                                    true)
+                                                ? Text("close")
+                                                : (offeringdata[index]
+                                                            .followed ==
+                                                        true)
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          check = !check;
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Color(
+                                                                0xFF8bc53f),
+                                                            border: Border.all(
+                                                              width: 1,
+                                                              color: Color(
+                                                                  0xFF8bc53f),
+                                                            ),
+                                                          ),
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 7,
+                                                                  right: 7,
+                                                                  top: 2,
+                                                                  bottom: 2),
+                                                          child: Text(
+                                                            "Intrested",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                            width: 1,
+                                                            color: Color(
+                                                                0xFF8bc53f),
+                                                          ),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                left: 7,
+                                                                right: 7,
+                                                                top: 2,
+                                                                bottom: 2),
+                                                        child: Text(
+                                                          "Intrested?",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      )
+
                                     // InkWell(
                                     //   onTap: () {
                                     //     setState(() {
@@ -151,54 +435,6 @@ class _AllOfferingState extends State<AllOffering> {
                                     //     ),
                                     //   ),
                                     // )
-
-                                    (offeringdata[index].followed == true)
-                                        ? InkWell(
-                                            onTap: () {
-                                              setState(() {
-                                                check = !check;
-                                                print("j $check");
-                                              });
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Color(0xFF8bc53f),
-                                                border: Border.all(
-                                                  width: 1,
-                                                  color: Color(0xFF8bc53f),
-                                                ),
-                                              ),
-                                              padding: EdgeInsets.only(
-                                                  left: 7,
-                                                  right: 7,
-                                                  top: 5,
-                                                  bottom: 5),
-                                              child: Text(
-                                                "Interested",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          )
-                                        : Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              border: Border.all(
-                                                width: 1,
-                                                color: Color(0xFF8bc53f),
-                                              ),
-                                            ),
-                                            padding: EdgeInsets.only(
-                                                left: 5,
-                                                right: 5,
-                                                top: 5,
-                                                bottom: 5),
-                                            child: Text(
-                                              "Interested?",
-                                              style: TextStyle(
-                                                  color: Color(0xFF8bc53f)),
-                                            ),
-                                          )
                                   ],
                                 ),
                                 SizedBox(

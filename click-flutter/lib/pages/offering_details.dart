@@ -7,6 +7,7 @@ import 'package:counter_flutter/repository/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'LoginScreen.dart';
+import 'orderPros.dart';
 
 class OfferingDetails extends StatefulWidget {
   final offid;
@@ -18,6 +19,7 @@ class OfferingDetails extends StatefulWidget {
 class _OfferingDetailsState extends State<OfferingDetails> {
   OffDetailsData offdetailsdata;
   List<UnderwritersList> underwritersList;
+  var check = false;
 
   getOfferingDetailsLi() async {
     var offeid = widget.offid;
@@ -58,16 +60,20 @@ class _OfferingDetailsState extends State<OfferingDetails> {
             (offdetailsdata != null)
                 ? Text(
                     offdetailsdata.name,
-                    style: TextStyle(color: Color(0xFF002b47), fontSize: 18),
+                    style: TextStyle(
+                        color: Color(0xFF002b47),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 17),
                   )
                 : Text("N/a"),
             (offdetailsdata != null)
                 ? Text(offdetailsdata.tickerSymbol,
-                    style: TextStyle(color: Color(0xFF002b47), fontSize: 15))
+                    style: TextStyle(
+                        color: Colors.blueGrey.shade500, fontSize: 15))
                 : Text("N/a")
           ],
         ),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
@@ -85,12 +91,12 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                         Text(
                           offdetailsdata.offeringTypeName,
                           style:
-                              TextStyle(color: Color(0xFF8bc53f), fontSize: 17),
+                              TextStyle(color: Color(0xFF8bc53f), fontSize: 16),
                         ),
                         Text(
                           offdetailsdata.industry,
                           style:
-                              TextStyle(color: Color(0xFF8bc53f), fontSize: 17),
+                              TextStyle(color: Color(0xFF8bc53f), fontSize: 16),
                         )
                       ],
                     ),
@@ -102,19 +108,19 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                       children: <Widget>[
                         Text(
                           "Anticipated Date:",
-                          style: TextStyle(
-                              color: Colors.grey.shade500, fontSize: 17),
+                          style:
+                              TextStyle(color: Colors.blueGrey, fontSize: 16),
                         ),
                         (offdetailsdata.tradeDate == null)
                             ? Text("TBD",
                                 style: TextStyle(
-                                    fontSize: 17,
-                                    color: Colors.black54,
+                                    fontSize: 16,
+                                    color: Colors.blueGrey,
                                     fontWeight: FontWeight.w500))
                             : Text(
                                 offdetailsdata.tradeDate.substring(0, 10),
                                 style: TextStyle(
-                                    color: Colors.grey.shade500, fontSize: 17),
+                                    color: Colors.blueGrey, fontSize: 16),
                               )
                       ],
                     ),
@@ -126,14 +132,14 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                       children: <Widget>[
                         Text(
                           "Price range:",
-                          style: TextStyle(
-                              color: Colors.grey.shade500, fontSize: 17),
+                          style:
+                              TextStyle(color: Colors.blueGrey, fontSize: 17),
                         ),
                         (offdetailsdata.tradeDate == null)
                             ? Text(
                                 "TBD",
                                 style: TextStyle(
-                                    color: Colors.grey.shade500, fontSize: 17),
+                                    color: Colors.blueGrey, fontSize: 17),
                               )
                             : Text(
                                 offdetailsdata.minPrice.toString() +
@@ -143,7 +149,7 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                                     offdetailsdata.maxPrice.toString(),
                                 style: TextStyle(
                                   fontSize: 17,
-                                  color: Colors.grey.shade500,
+                                  color: Colors.blueGrey,
                                 ))
                       ],
                     ),
@@ -155,58 +161,166 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                       children: <Widget>[
                         Text(
                           "Approx shares:",
-                          style: TextStyle(
-                              color: Colors.grey.shade500, fontSize: 17),
+                          style:
+                              TextStyle(color: Colors.blueGrey, fontSize: 17),
                         ),
                         (offdetailsdata.finalShares == null)
                             ? Text(
                                 "TBD",
                                 style: TextStyle(
-                                    color: Colors.grey.shade500, fontSize: 17),
+                                    color: Colors.blueGrey, fontSize: 17),
                               )
                             : Text(
                                 offdetailsdata.finalShares,
                                 style: TextStyle(
-                                    color: Colors.grey.shade500, fontSize: 17),
+                                    color: Colors.blueGrey, fontSize: 17),
                               )
                       ],
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        var placedata = {
-                          "exid": offdetailsdata.extId,
-                          "dsp": offdetailsdata.dsp,
-                          "minticSize": offdetailsdata.minTicketSize,
-                          "maxticSize": offdetailsdata.maxTicketSize,
-                          "apprxShare": offdetailsdata.finalShares
-                        };
-                        print(placedata);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    PlaceOrderScreen()));
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 45,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              end: Alignment.topRight,
-                              colors: [Color(0xFF98cd4a), Color(0xFF649f49)]),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Place order",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                      ),
-                    ),
+                    (offdetailsdata.availableToOrder == 1 &&
+                            offdetailsdata.hasOrder == false)
+                        ? GestureDetector(
+                            onTap: () {
+                              var placedata = {
+                                "exid": offdetailsdata.extId,
+                                "dsp": offdetailsdata.dsp,
+                                "minticSize": offdetailsdata.minTicketSize,
+                                "maxticSize": offdetailsdata.maxTicketSize,
+                                "apprxShare": offdetailsdata.finalShares
+                              };
+                              print(placedata);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          PlaceOrderScreen()));
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    colors: [
+                                      Color(0xFF98cd4a),
+                                      Color(0xFF8bc53f)
+                                    ]),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Place order",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                            ),
+                          )
+                        : (offdetailsdata.availableToOrder == 1 &&
+                                offdetailsdata.hasOrder == true)
+                            ? GestureDetector(
+                                onTap: () {
+                                  var placedata = {
+                                    "exid": offdetailsdata.extId,
+                                    "dsp": offdetailsdata.dsp,
+                                    "minticSize": offdetailsdata.minTicketSize,
+                                    "maxticSize": offdetailsdata.maxTicketSize,
+                                    "apprxShare": offdetailsdata.finalShares
+                                  };
+                                  print(placedata);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PlaceOrderScreen()));
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          Color(0xFF98cd4a),
+                                          Color(0xFF8bc53f)
+                                        ]),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Modify order",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                ),
+                              )
+                            : (offdetailsdata.availableToOrder == 2 &&
+                                    offdetailsdata.sixtyMinMailTime == null)
+                                ? GestureDetector(
+                                    onTap: () {
+                                      var placedata = {
+                                        "exid": offdetailsdata.extId,
+                                        "dsp": offdetailsdata.dsp,
+                                        "minticSize":
+                                            offdetailsdata.minTicketSize,
+                                        "maxticSize":
+                                            offdetailsdata.maxTicketSize,
+                                        "apprxShare": offdetailsdata.finalShares
+                                      };
+                                      print(placedata);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PlaceOrderScreen()));
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                            begin: Alignment.bottomLeft,
+                                            end: Alignment.topRight,
+                                            colors: [
+                                              Color(0xFF98cd4a),
+                                              Color(0xFF8bc53f)
+                                            ]),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "Place order",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: double.infinity,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: Alignment.bottomLeft,
+                                          end: Alignment.topRight,
+                                          colors: [
+                                            Color(0xFF98cd4a),
+                                            Color(0xFF8bc53f)
+                                          ]),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Not Available at this time",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
                     SizedBox(
                       height: 15,
                     ),
@@ -218,7 +332,7 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
-                                  color: Color(0xFF649f49), width: 1.5)),
+                                  color: Color(0xFF8bc53f), width: 1.5)),
                           alignment: Alignment.center,
                           child: Text(
                             "Share",
@@ -233,17 +347,47 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                           width: (42 / 100) * MediaQuery.of(context).size.width,
                           height: 40,
                           decoration: BoxDecoration(
+                              color: (offdetailsdata.followed == true)
+                                  ? Color(0xFF8bc53f)
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
-                                  color: Color(0xFF649f49), width: 1.5)),
+                                  color: (offdetailsdata.followed == true)
+                                      ? Colors.white
+                                      : Color(0xFF8bc53f),
+                                  width: 1.5)),
                           alignment: Alignment.center,
-                          child: Text(
-                            "Interested?",
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF8bc53f)),
-                          ),
+                          child: (offdetailsdata.followed == true)
+                              ? InkWell(
+                                  onTap: () {
+                                    check = !check;
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.check,
+                                          color:
+                                              (offdetailsdata.followed == true)
+                                                  ? Colors.white
+                                                  : Color(0xFF8bc53f),
+                                          size: 17),
+                                      Text(
+                                        "Interested",
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Text(
+                                  "Interested?",
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xFF8bc53f)),
+                                ),
                         )
                       ],
                     ),
@@ -257,47 +401,156 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                           "DESCRIPTION",
                           style: TextStyle(
                               color: Colors.blueGrey.shade800,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 10,
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 7),
                           child: Text(offdetailsdata.description,
                               style: TextStyle(
-                                  color: Colors.blueGrey.shade400,
-                                  fontSize: 17,
+                                  color: Colors.blueGrey,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w400)),
                         )
                       ],
                     ),
                     SizedBox(
-                      height: 15,
+                      height: 20,
                     ),
                     Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.edit,
-                          size: 15,
-                        ),
-                        Text("Prospectus",
-                            style: TextStyle(
-                                color: Colors.grey.shade600,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500))
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        (offdetailsdata.prospectusUrl != "")
+                            ? InkWell(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('Prospectus'),
+                                          content: Text(
+                                              'Would you like to read the prospectus?'),
+                                          actions: <Widget>[
+                                            GestureDetector(
+                                              onTap: () {
+                                                var prourl = offdetailsdata
+                                                    .prospectusUrl;
+                                                Navigator.of(context).pop();
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProspectusWeb(
+                                                                prourl)));
+                                              },
+                                              child: Text("Read",
+                                                  style: TextStyle(
+                                                      color: Colors.teal,
+                                                      fontSize: 15)),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("Cancel",
+                                                  style: TextStyle(
+                                                      color: Colors.teal,
+                                                      fontSize: 15)),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.insert_drive_file_outlined,
+                                      color: Color(0xFF8bc53f),
+                                      size: 15,
+                                    ),
+                                    Text(" Prospectus",
+                                        style: TextStyle(
+                                            color: Colors.blueGrey,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700))
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                        (offdetailsdata.brochureUrl != "")
+                            ? InkWell(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('Brochure'),
+                                          content: Text(
+                                              'Would you like to read the brochure or email yourself a copy?'),
+                                          actions: <Widget>[
+                                            GestureDetector(
+                                              onTap: () {
+                                                var prourl =
+                                                    offdetailsdata.brochureUrl;
+                                                Navigator.of(context).pop();
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ProspectusWeb(
+                                                                prourl)));
+                                              },
+                                              child: Text("Read",
+                                                  style: TextStyle(
+                                                      color: Colors.teal,
+                                                      fontSize: 15)),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("Cancel",
+                                                  style: TextStyle(
+                                                      color: Colors.teal,
+                                                      fontSize: 15)),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.insert_drive_file_outlined,
+                                      color: Color(0xFF8bc53f),
+                                      size: 15,
+                                    ),
+                                    Text(" Brochure",
+                                        style: TextStyle(
+                                            color: Colors.blueGrey,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w700))
+                                  ],
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                     SizedBox(
-                      height: 15,
+                      height: 22,
                     ),
                     Text(
                       "UNDERWRITER(S)",
                       style: TextStyle(
                           color: Colors.blueGrey.shade800,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     ListView.builder(
                         shrinkWrap: true,
@@ -309,7 +562,7 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                                   .underwritersList[index].executingBrokerName,
                               style: TextStyle(
                                   color: Colors.blueGrey.shade400,
-                                  fontSize: 17,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w400));
                         }),
                   ],

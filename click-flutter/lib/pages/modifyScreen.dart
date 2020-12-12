@@ -1,4 +1,10 @@
+import 'dart:convert';
+
+import 'package:counter_flutter/repository/provider.dart';
 import 'package:flutter/material.dart';
+
+import 'LoginScreen.dart';
+import 'myhomepage.dart';
 
 class ModifyOrder extends StatefulWidget {
   final modifyDetails;
@@ -10,6 +16,19 @@ class ModifyOrder extends StatefulWidget {
 class _ModifyOrderState extends State<ModifyOrder> {
   bool monVal = false;
   var checkbox = false;
+  var invest;
+
+  getModify(modiData) async {
+    var morderType = await Providers().getModifyOrder(modiData);
+    print(json.encode(morderType));
+    if (morderType.error == 0) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+    } else if (morderType.error == 401) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } else {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +179,7 @@ class _ModifyOrderState extends State<ModifyOrder> {
                 ],
               ),
               SizedBox(
-                height: 15,
+                height: 7,
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 70),
@@ -174,16 +193,33 @@ class _ModifyOrderState extends State<ModifyOrder> {
                             : Text(
                                 "${String.fromCharCode(036)}",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.w300, fontSize: 18),
+                                    fontWeight: FontWeight.w300, fontSize: 20),
                               ),
-                        Text("${widget.modifyDetails['maxPrice']}",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w300)),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          child: TextFormField(
+                              initialValue:
+                                  widget.modifyDetails['requestAmo'].toString(),
+                              keyboardType: TextInputType.number,
+                              autofocus: true,
+                              onChanged: (text) {
+                                invest = int.parse(text) /
+                                    widget.modifyDetails['maxPrice'];
+                                setState(() {});
+                              },
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w300)),
+                        ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 115),
-                      child: Text(" =${widget.modifyDetails['finalPrice']}",
+                      padding: const EdgeInsets.only(left: 70),
+                      child: Text(" =${invest.toString().split(".")[0]}",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w300)),
                     ),
@@ -214,6 +250,7 @@ class _ModifyOrderState extends State<ModifyOrder> {
                         setState(() {
                           monVal = value;
                           checkbox = !checkbox;
+                          print("euei $monVal");
                         });
                       },
                     ),
@@ -223,15 +260,18 @@ class _ModifyOrderState extends State<ModifyOrder> {
               ),
               GestureDetector(
                 onTap: () {
-                  setState(() {
-                    if (checkbox == true) {
-                      // Navigator.pushReplacement(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             CongratulationScreen()));
-                    }
-                  });
+                  var modidata = {
+                    "ext_id": widget.modifyDetails['exid'],
+                    "buying_power": widget.modifyDetails['buyingp'],
+                    "mpid": widget.modifyDetails['mpid'],
+                    "account_id": widget.modifyDetails['account_id'],
+                    "attestation_to_rules_5130_and_5131":
+                        monVal == true ? 1 : 0,
+                    "dsp": widget.modifyDetails['dsp'],
+                    "requested_amount": widget.modifyDetails['requestAmo']
+                  };
+                  print(modidata);
+                  getModify(modidata);
                 },
                 child: Container(
                     decoration: BoxDecoration(
@@ -242,7 +282,6 @@ class _ModifyOrderState extends State<ModifyOrder> {
                             colors: [Color(0xFF98cd4a), Color(0xFF649f49)])),
                     height: 50,
                     width: double.infinity,
-                    // color: Colors.lime,
                     child: Center(
                         child: Text(
                       "Review modification",

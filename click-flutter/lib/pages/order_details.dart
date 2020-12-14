@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'orderPros.dart';
 
@@ -192,7 +193,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                   SizedBox(
                     height: 15,
                   ),
-                  Text("${widget.orderDetails['tradedate']}",
+                  Text(
+                      DateFormat("MMM d").format(DateTime.parse(
+                          "${widget.orderDetails['tradedate']}")),
                       style: TextStyle(
                           fontSize: 15,
                           color: Colors.blueGrey.shade400,

@@ -5,30 +5,47 @@ import 'package:counter_flutter/model/offeringDetails_model.dart';
 import 'package:counter_flutter/pages/PlaceOrder.dart';
 import 'package:counter_flutter/repository/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'LoginScreen.dart';
+import 'modifyScreen.dart';
 import 'orderPros.dart';
 
 class OfferingDetails extends StatefulWidget {
-  final offid;
-  OfferingDetails(this.offid);
+  final alloffdata;
+  OfferingDetails(this.alloffdata);
   @override
   _OfferingDetailsState createState() => _OfferingDetailsState();
 }
 
 class _OfferingDetailsState extends State<OfferingDetails> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   OffDetailsData offdetailsdata;
   List<UnderwritersList> underwritersList;
-  var check = false;
+  var check = false, followed = false;
 
   getOfferingDetailsLi() async {
-    var offeid = widget.offid;
+    var offeid = widget.alloffdata['offid'];
     var offeringDType = await Providers().getOfferingDetails(offeid);
     if (offeringDType.error == 0) {
       setState(() {
         offdetailsdata = offeringDType.data;
+        followed = offdetailsdata.followed;
       });
     } else if (offeringDType.error == 401) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } else {}
+  }
+
+  getInterestedType(followed) async {
+    var intrData = {"ext_id": offdetailsdata.extId, "save": followed};
+    print("ASDEEE $intrData");
+    var interestedType = await Providers().getInteresterd(intrData);
+    if (interestedType.error == 0) {
+      // _scaffoldKey.currentState.showSnackBar(
+      //     new SnackBar(content: new Text(interestedType.message)));
+    } else if (interestedType.error == 401) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
     } else {}
@@ -43,6 +60,7 @@ class _OfferingDetailsState extends State<OfferingDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
@@ -114,11 +132,12 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                         (offdetailsdata.tradeDate == null)
                             ? Text("TBD",
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.blueGrey,
-                                    fontWeight: FontWeight.w500))
+                                  fontSize: 16,
+                                  color: Colors.blueGrey,
+                                ))
                             : Text(
-                                offdetailsdata.tradeDate.substring(0, 10),
+                                DateFormat("MMM d").format(DateTime.parse(
+                                    offdetailsdata.tradeDate.substring(0, 10))),
                                 style: TextStyle(
                                     color: Colors.blueGrey, fontSize: 16),
                               )
@@ -223,19 +242,27 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                                 offdetailsdata.hasOrder == true)
                             ? GestureDetector(
                                 onTap: () {
-                                  var placedata = {
+                                  var modifyDetails = {
                                     "exid": offdetailsdata.extId,
+                                    "logo_small": offdetailsdata.logoSmall,
+                                    "minPrice": offdetailsdata.minPrice,
+                                    "maxPrice": offdetailsdata.maxPrice,
+                                    "ticminPrice": offdetailsdata.minTicketSize,
+                                    "ticmaxPrice": offdetailsdata.maxTicketSize,
+                                    "finalPrice": offdetailsdata.finalShares,
+                                    "orderDollarsh":
+                                        offdetailsdata.ordrDollarShare,
+                                    "buyingp": widget.alloffdata['buyingp'],
                                     "dsp": offdetailsdata.dsp,
-                                    "minticSize": offdetailsdata.minTicketSize,
-                                    "maxticSize": offdetailsdata.maxTicketSize,
-                                    "apprxShare": offdetailsdata.finalShares
+                                    "account_id":
+                                        widget.alloffdata['account_id'],
+                                    "mpid": widget.alloffdata['mpid']
                                   };
-                                  print(placedata);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              PlaceOrderScreen()));
+                                              ModifyOrder(modifyDetails)));
                                 },
                                 child: Container(
                                   width: double.infinity,
@@ -347,30 +374,24 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                           width: (42 / 100) * MediaQuery.of(context).size.width,
                           height: 40,
                           decoration: BoxDecoration(
-                              color: (offdetailsdata.followed == true)
-                                  ? Color(0xFF8bc53f)
-                                  : Colors.white,
+                              color:
+                                  followed ? Color(0xFF8bc53f) : Colors.white,
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
-                                  color: (offdetailsdata.followed == true)
-                                      ? Colors.white
-                                      : Color(0xFF8bc53f),
-                                  width: 1.5)),
+                                  color: Color(0xFF8bc53f), width: 1.5)),
                           alignment: Alignment.center,
-                          child: (offdetailsdata.followed == true)
-                              ? InkWell(
-                                  onTap: () {
-                                    check = !check;
-                                  },
-                                  child: Row(
+                          child: InkWell(
+                            onTap: () {
+                              followed = !followed;
+                              setState(() {});
+                              getInterestedType(followed);
+                            },
+                            child: (followed == true)
+                                ? Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(Icons.check,
-                                          color:
-                                              (offdetailsdata.followed == true)
-                                                  ? Colors.white
-                                                  : Color(0xFF8bc53f),
-                                          size: 17),
+                                          color: Colors.white, size: 17),
                                       Text(
                                         "Interested",
                                         style: TextStyle(
@@ -379,15 +400,13 @@ class _OfferingDetailsState extends State<OfferingDetails> {
                                             color: Colors.white),
                                       ),
                                     ],
-                                  ),
-                                )
-                              : Text(
-                                  "Interested?",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xFF8bc53f)),
-                                ),
+                                  )
+                                : Text("Intrested?",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xFF8bc53f))),
+                          ),
                         )
                       ],
                     ),

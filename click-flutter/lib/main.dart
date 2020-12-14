@@ -4,7 +4,7 @@ import 'package:counter_flutter/pages/LoginScreen.dart';
 
 import 'package:flutter/material.dart';
 
-void main() => runApp(chooseWidget(window.defaultRouteName));
+//void main() => runApp(chooseWidget(window.defaultRouteName));
 
 Widget chooseWidget(String route) {
   switch (route) {
@@ -20,7 +20,7 @@ Widget chooseWidget(String route) {
   }
 }
 
-//void main() => runApp((MyFlutterActivity()));
+void main() => runApp((MyFlutterActivity()));
 
 class MyFlutterActivity extends StatefulWidget {
   @override

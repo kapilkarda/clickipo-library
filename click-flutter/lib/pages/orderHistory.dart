@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class OrderHostory extends StatefulWidget {
   final ordhData;
@@ -39,7 +40,9 @@ class _OrderHostoryState extends State<OrderHostory> {
                 children: [
                   Container(
                     width: double.infinity,
-                    color: Colors.grey.shade200,
+                    color: (widget.ordhData['orderh'][index].status == "active")
+                        ? Colors.white
+                        : Colors.grey.shade200,
                     padding: EdgeInsets.only(
                         left: 10, right: 10, top: 10, bottom: 10),
                     child: Row(
@@ -60,9 +63,9 @@ class _OrderHostoryState extends State<OrderHostory> {
                             Text(
                               widget.ordhData['ordname'],
                               style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.blueGrey.shade700,
-                                  fontWeight: FontWeight.w500),
+                                  fontSize: 17,
+                                  color: Colors.blueGrey.shade600,
+                                  fontWeight: FontWeight.bold),
                             ),
                             SizedBox(
                               height: 5,
@@ -72,8 +75,8 @@ class _OrderHostoryState extends State<OrderHostory> {
                                 Text(
                                   "Order: ",
                                   style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 17,
+                                      color: Colors.blueGrey.shade400,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w400),
                                 ),
                                 Row(
@@ -82,8 +85,8 @@ class _OrderHostoryState extends State<OrderHostory> {
                                         ? Text(
                                             "${String.fromCharCode(036)}",
                                             style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 17,
+                                                color: Colors.blueGrey.shade400,
+                                                fontSize: 15,
                                                 fontWeight: FontWeight.w400),
                                           )
                                         : Text(""),
@@ -93,7 +96,7 @@ class _OrderHostoryState extends State<OrderHostory> {
                                                 .requestedAmount
                                                 .toString(),
                                             style: TextStyle(
-                                                color: Colors.black54,
+                                                color: Colors.blueGrey.shade400,
                                                 fontSize: 17,
                                                 fontWeight: FontWeight.w400),
                                           )
@@ -102,8 +105,8 @@ class _OrderHostoryState extends State<OrderHostory> {
                                                 .requestedShares
                                                 .toString(),
                                             style: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 17,
+                                                color: Colors.blueGrey.shade400,
+                                                fontSize: 15,
                                                 fontWeight: FontWeight.w400),
                                           ),
                                   ],
@@ -114,14 +117,17 @@ class _OrderHostoryState extends State<OrderHostory> {
                               children: [
                                 Text("Status: ",
                                     style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: 17,
+                                        color: Colors.blueGrey.shade400,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w400)),
                                 Text(
-                                  widget.ordhData['orderh'][index].status,
+                                  (widget.ordhData['orderh'][index].status ==
+                                          "active")
+                                      ? "Pending"
+                                      : widget.ordhData['orderh'][index].status,
                                   style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 17,
+                                      color: Colors.blueGrey.shade400,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],
@@ -130,14 +136,17 @@ class _OrderHostoryState extends State<OrderHostory> {
                               children: [
                                 Text("Date: ",
                                     style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: 17,
+                                        color: Colors.blueGrey.shade400,
+                                        fontSize: 15,
                                         fontWeight: FontWeight.w400)),
                                 Text(
-                                  widget.ordhData['orderh'][index].createdAt,
+                                  DateFormat("MMM d, y hh:mm:ss").format(
+                                      DateTime.parse(widget
+                                          .ordhData['orderh'][index]
+                                          .createdAt)),
                                   style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 17,
+                                      color: Colors.blueGrey.shade400,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w400),
                                 ),
                               ],

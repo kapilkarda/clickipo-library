@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\Ankita\\Desktop\\Digi - Copy\\clickipo-library\\build\\host\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "D:\\ems_flutter\\myproject\\clickipo-library\\click-flutter\\build\\host\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Ankita\\Desktop\\Digi - Copy\\clickipo-library\\.android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "D:\\ems_flutter\\myproject\\clickipo-library\\click-flutter\\.android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

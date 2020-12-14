@@ -5,6 +5,7 @@ import 'package:counter_flutter/model/order_model.dart';
 import 'package:counter_flutter/pages/ConfirmCancel.dart';
 import 'package:counter_flutter/repository/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'LoginScreen.dart';
 import 'modifyScreen.dart';
@@ -244,9 +245,14 @@ class _MyOrderState extends State<MyOrder> {
                                                         fontWeight:
                                                             FontWeight.w400)),
                                                 Text(
-                                                    orderdata[index]
-                                                        .createdAt
-                                                        .substring(0, 10),
+                                                    DateFormat(
+                                                            "MMM d, y hh:mm:ss")
+                                                        .format(DateTime.parse(
+                                                            orderdata[index]
+                                                                .orders[0]
+                                                                .createdAt
+                                                                .substring(
+                                                                    0, 10))),
                                                     style: TextStyle(
                                                         color: Colors
                                                             .blueGrey.shade400,

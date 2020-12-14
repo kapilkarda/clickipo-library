@@ -50,8 +50,8 @@ class _MyHomePageState extends State<MyHomePage>
         centerTitle: true,
         title: Image.asset(
           "assets/images/1app-02.png",
-          height: 70,
-          width: 120,
+          height: 60,
+          width: 100,
         ),
       ),
       body: new Column(

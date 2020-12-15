@@ -1,0 +1,7 @@
+${PODS_ROOT}/Target Support Files/Pods-IOS Module/Pods-IOS Module-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Toast/Toast.framework
+${PODS_ROOT}/../../click-flutter/.ios/Flutter/App.framework
+${BUILT_PRODUCTS_DIR}/fluttertoast/fluttertoast.framework
+${BUILT_PRODUCTS_DIR}/shared_preferences/shared_preferences.framework
+${BUILT_PRODUCTS_DIR}/webview_flutter/webview_flutter.framework
+${PODS_XCFRAMEWORKS_BUILD_DIR}/Flutter/Flutter.framework/Flutter

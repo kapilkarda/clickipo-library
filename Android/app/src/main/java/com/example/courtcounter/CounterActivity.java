@@ -58,28 +58,18 @@ import io.flutter.embedding.android.FlutterActivity;
 
 public class CounterActivity extends AppCompatActivity {
 
+
     Button flutterButton;
-    private AppWidgetHost Flutter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counter);
-          String params = getIntent().getStringExtra("params");
          flutterButton = findViewById(R.id.flutterbutton);
-        // View flutterView = Flutter.createView(this, getLifecycle(), "service");
-//        flutterButton = findViewById(R.id.flutterbutton);
         flutterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e("onClick: ANKITA","ANKITA" );
-                startActivity(
-                FlutterActivity
-                        .withNewEngine()
-                        .initialRoute("splashRoute")
-                        .build(CounterActivity.this)
-
-        );
+                startActivity(FlutterActivity.createDefaultIntent(CounterActivity.this));
 
             }
         });

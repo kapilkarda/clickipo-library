@@ -2,6 +2,15 @@ plugins {
     id 'com.android.application'
 }
 
+repositories {
+    maven {
+        url 'D:/ems_flutter/myproject/clickipo-library/click-flutter/build/host/outputs/repo'
+    }
+    maven {
+        url '$storageUrl/download.flutter.io'
+    }
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
@@ -21,6 +30,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        profile {
+            initWith debug
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -36,6 +48,9 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation project(':flutter')
+
+    debugImplementation 'com.example.counter_flutter:flutter_debug:1.0'
+    profileImplementation 'com.example.counter_flutter:flutter_profile:1.0'
+    releaseImplementation 'com.example.counter_flutter:flutter_release:1.0'
 
 }
